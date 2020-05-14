@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis3.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.xyl.testtool.dao.TestCaseDao">
+    <resultMap id="TestCaseMap" type="cn.xyl.testtool.entities.TestCase">
+        <id property="id" column="id"/>
+        <result property="seed" column="seed"/>
+        <result property="kind" column="kind"/>
+        <result property="name" column="name"/>
+    </resultMap>
+    <sql id="allWithoutId">
+        seed,kind,name
+    </sql>
+    <sql id="selectAll">
+        select
+        id,
+        <include refid="allWithoutId"/>
+        from testcase
+    </sql>
+    <select id="getCases" parameterType="cn.xyl.testtool.entities.TestCase" resultMap="TestCaseMap">
+        <include refid="selectAll"/>
+        <where>
+            seed=#{seed}
+        </where>
+    </select>
+
+    <select id="getOneKindCases" parameterType="cn.xyl.testtool.entities.TestCase" resultMap="TestCaseMap">
+        <include refid="selectAll"/>
+        <where>
+            seed=#{seed} and kind=#{kind}
+        </where>
+    </select>
+    <insert id="addOneCase" parameterType="cn.xyl.testtool.entities.TestCase">
+        insert into testcase
+        (<include refid="allWithoutId"/>)
+        values
+        (#{seed},#{kind},#{name})
+    </insert>
+    <delete id="deleteOneCase" parameterType="cn.xyl.testtool.entities.TestCase">
+        delete from testcase
+        <where>
+            seed=#{seed}
+            and
+            kind=#{kind}
+            and
+            name=#{name}
+        </where>
+    </delete>
+    <insert id="addCases" parameterType="java.util.ArrayList">
+        insert into testcase
+        (<include refid="allWithoutId"/>)
+        values
+        <foreach collection="list" item="testCase" separator=",">
+            ( #{testCase.seed},#{testCase.kind},#{testCase.name})
+        </foreach>
+    </insert>
+
+    <delete id="deleteCases" parameterType="cn.xyl.testtool.entities.TestCase">
+        delete from testcase
+        <where>
+            seed=#{seed}
+            and
+            kind=#{kind}
+        </where>
+    </delete>
+    <delete id="clearCases" parameterType="cn.xyl.testtool.entities.TestCase">
+        delete from testcase
+        <where>
+            seed=#{seed}
+        </where>
+    </delete>
+
+</mapper>

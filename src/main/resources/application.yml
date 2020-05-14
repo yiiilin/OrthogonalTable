@@ -1,0 +1,18 @@
+server:
+  port: 30000
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: org.gjt.mm.mysql.Driver
+    url: jdbc:mysql://datasource.com:3306/testcase?useUnicode=true&characterEncoding=utf8
+    username: testcase
+    password: testcase
+    dbcp2:
+      min-idle: 5
+      initial-size: 5
+      max-total: 5
+      max-wait-millis: 200
+mybatis:
+  config-location: classpath:mybatis/mybatis.cfg.xml
+  type-aliases-package: com.manchang.microservice.entities
+  mapper-locations: classpath:mybatis/mapper/**/*.xml
